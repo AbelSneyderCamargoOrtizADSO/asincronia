@@ -1,23 +1,23 @@
-(async () => {
+(async () => { // DEFINIMOS UNA FUNCION ANONIMA AUTOEJECUTABLE Y LA DECLARAMOS COMO ASINCRONA
     try {
-        let respuesta = await fetch("../user.json");
-        let usuarios = await respuesta.json();
+        let respuesta = await fetch("../user.json"); // REALIZAMOS LA PETICIÓN AL ARCHIVO USER.JSON Y ESPERAMOS SU RESPUESTA, ESPERAMOS A QUE LA PROMESA SE RESUELVE
+        let usuarios = await respuesta.json(); // PARSEAMOS LA RESPUESTA A JSON Y LA ASIGNAMOS A LA VARIABLE USUARIOS
 
-        let aprendices = usuarios.users.filter(usuario => usuario.aprendiz);
+        let aprendices = usuarios.users.filter(usuario => usuario.aprendiz); // FILTRAMOS LOS USUARIOS QUE SON APRENDICES Y LOS ASIGNAMOS A LA VARIABLE APRENDICES
         
-        let respositorios = [];
+        let respositorios = []; // CREAMOS UN ARRAY VACIO PARA ALMACENAR LOS REPOSITORIOS DE LOS APRENDICES
         
-        for (const aprendiz of aprendices) {
-            console.log(aprendiz.user);
-            let response = await fetch(`https://api.github.com/users/${aprendiz.user}/repos`);
-            let data = await response.json();
-            console.log(data);
+        for (const aprendiz of aprendices) { // ITERAMOS SOBRE CADA APRENDIZ EN EL ARRAY DE APRENDICES
+            console.log(aprendiz.user); // IMPRIMIMOS EN CONSOLA EL NOMBRE DE USUARIO DEL APRENDIZ
+            let response = await fetch(`https://api.github.com/users/${aprendiz.user}/repos`);  // REALIZAMOS UNA PETICIÓN A LA API DE GITHUB PARA OBTENER LOS REPOSITORIOS DEL APRENDIZ Y CON EL AWAIT ESPERAMOS SU RESPUESTA
+            let data = await response.json(); // PARSEAMOS LA RESPUESTA A JSON Y LA ASIGNAMOS A LA VARIABLE DATA
+            console.log(data); // IMPRIMIMOS EN CONSOLA LOS DATOS OBTENIDOS (REPOSITORIOS DEL APRENDIZ)
 
-            respositorios = respositorios.concat(data);
+            respositorios.push(data); // AÑADIMOS LOS DATOS (REPOSITORIOS) AL ARRAY RESPORITORIOS, PARA JUNTARLOS
         }
 
-        console.log("TODOS LOS REPOSITORIOS:", respositorios);
-    } catch (error) {
-        console.error("SE PRODUJO UN ERROR", error);
+        console.log("TODOS LOS REPOSITORIOS:", respositorios); // IMPRIMIMOS EN CONSOLA TODOS LOS REPOSITORIOS DE TODOS LOS APRENDICES
+    } catch (error) { // CAPTURAMOS CUALQUIER ERROR QUE OCURRA DURANTE LA EJECUCIÓN DEL BLOQUE TRY
+        console.error("SE PRODUJO UN ERROR", error); // IMPRIMIMOS EN CONSOLA UN MENSAJE DE ERROR
     }
-})();
+})(); // EJECUTAMOS LA FUNCION ANONIMA AUTOEJECUTABLE
